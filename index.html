@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mở liên kết</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Long Press Select URL</title>
 
 <style>
     body {
@@ -15,16 +15,8 @@
     }
 
     h2 {
-        font-size: 30px;
+        font-size: 28px;
         font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    p {
-        font-size: 18px;
-        color: #555;
-        margin-top: 5px;
-        line-height: 1.45;
     }
 
     #boxWrap {
@@ -32,35 +24,24 @@
         padding: 26px 16px;
         border-radius: 20px;
         background: #f2f2f2;
-        transition: 0.2s;
     }
 
     #urlBox {
         font-size: 22px;
-        line-height: 32px;
         user-select: text;
+        line-height: 30px;
         word-break: break-all;
     }
 
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-        100% { transform: scale(1); }
-    }
-
-    .pulse {
-        animation: pulse 0.6s ease-in-out 2;
-    }
-
-    .btn {
+    #btnHold {
         width: 86%;
-        margin: 18px auto;
-        padding: 18px 20px;
         background: #ff5722;
-        color: #fff;
+        color: white;
+        padding: 18px;
+        border-radius: 16px;
         font-size: 22px;
-        border-radius: 14px;
-        font-weight: 600;
+        font-weight: 700;
+        margin: 25px auto;
         user-select: none;
     }
 
@@ -71,42 +52,58 @@
         font-weight: 600;
         display: none;
     }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+        100% { transform: scale(1); }
+    }
+
+    .pulse {
+        animation: pulse 0.6s ease-in-out 2;
+    }
 </style>
 </head>
 
 <body>
 
-<h2>Mở liên kết</h2>
-<p>Nhấn nút để tô đen URL → sau đó chạm 1 lần để hiện “Mở liên kết”</p>
+<h2>Nhấn giữ để mở liên kết</h2>
+<p>Nhấn giữ nút dưới đây 1 giây → hệ thống sẽ tự chọn URL.</p>
 
-<div id="boxWrap">
-    <div id="urlBox">https://beacons.ai/tuimufeedback</div>
-</div>
+<div id="boxWrap"><div id="urlBox">https://beacons.ai/tuimufeedback</div></div>
 
-<div id="selectBtn" class="btn">Chọn URL</div>
+<div id="btnHold">NHẤN GIỮ 1 GIÂY</div>
 
-<div id="hint">👉 Chạm 1 lần vào đoạn URL!</div>
+<div id="hint">👉 Nhả tay ra và chạm 1 lần vào URL nếu popup chưa hiện!</div>
 
 <script>
+const btn = document.getElementById("btnHold");
 const urlBox = document.getElementById("urlBox");
 const wrap = document.getElementById("boxWrap");
-const btn = document.getElementById("selectBtn");
 const hint = document.getElementById("hint");
 
-btn.addEventListener("click", () => {
-    const range = document.createRange();
-    range.selectNodeContents(urlBox);
+let pressTimer;
 
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+btn.addEventListener("touchstart", () => {
+    pressTimer = setTimeout(() => {
+        let range = document.createRange();
+        range.selectNodeContents(urlBox);
 
-    wrap.classList.add("pulse");
-    setTimeout(() => wrap.classList.remove("pulse"), 700);
+        let sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
 
-    hint.style.display = "block";
+        wrap.classList.add("pulse");
+        setTimeout(() => wrap.classList.remove("pulse"), 700);
 
-    urlBox.scrollIntoView({ behavior: "smooth", block: "center" });
+        hint.style.display = "block";
+
+        urlBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 900);
+});
+
+btn.addEventListener("touchend", () => {
+    clearTimeout(pressTimer);
 });
 </script>
 
