@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mở liên kết</title>
+<title>Tô đen URL</title>
 
 <style>
     body {
@@ -15,7 +15,7 @@
     }
 
     h2 { font-size: 28px; font-weight: 700; }
-    p { font-size: 18px; opacity: 0.7; }
+    p  { font-size: 18px; opacity: 0.7; }
 
     .box {
         margin: 30px auto;
@@ -23,17 +23,13 @@
         background: #f2f2f2;
         border-radius: 18px;
         padding: 35px 20px;
-        user-select: none;
     }
 
-    input {
-        width: 100%;
+    #urlBox {
         font-size: 22px;
         text-align: center;
-        background: transparent;
-        border: none;
-        outline: none;
-        user-select: none;
+        user-select: text;
+        word-break: break-all;
     }
 
     .btn {
@@ -47,43 +43,31 @@
         font-weight: 600;
         user-select: none;
     }
-
-    *:focus { outline: none !important; box-shadow: none !important; }
 </style>
 
 </head>
 <body>
 
-<h2>Mở liên kết</h2>
-<p>Làm theo bước 1 → rồi bước 2 để thoát WebView</p>
+<h2>Tô đen URL</h2>
+<p>Nhấn nút để tự động chọn toàn bộ URL</p>
 
 <div class="box">
-    <input id="url" value="https://beacons.ai/tuimufeedback" readonly>
+    <div id="urlBox">https://beacons.ai/tuimufeedback</div>
 </div>
 
-<div class="btn" id="selectBtn">1. Chọn URL</div>
-<div class="btn" id="googleBtn">2. Tìm kiếm Google (Thoát WebView)</div>
+<div class="btn" id="selectBtn">Chọn URL</div>
 
 <script>
-const input = document.getElementById("url");
+const urlBox = document.getElementById("urlBox");
 const btnSelect = document.getElementById("selectBtn");
-const btnGoogle = document.getElementById("googleBtn");
 
-function autoSelect() {
-    setTimeout(() => {
-        input.setSelectionRange(0, input.value.length);
-    }, 0);
-}
-
-// Nút 1 → tô đen
-btnSelect.addEventListener("touchstart", autoSelect, { passive: true });
-btnSelect.addEventListener("mousedown", autoSelect);
-
-// Nút 2 → mở Google Search bằng text
-btnGoogle.addEventListener("click", function () {
-    const query = encodeURIComponent(input.value);
-    const googleSearch = "https://www.google.com/search?q=" + query;
-    window.location.href = googleSearch;
+// BƯỚC 1 — TÔ ĐEN DIV (Chạy 100% trên TikTok iOS)
+btnSelect.addEventListener("click", () => {
+    const range = document.createRange();
+    range.selectNodeContents(urlBox);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
 });
 </script>
 
