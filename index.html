@@ -22,7 +22,7 @@
         width: 92%;
         background: #f2f2f2;
         border-radius: 18px;
-        padding: 40px 20px;
+        padding: 35px 20px;
         user-select: none;
     }
 
@@ -50,21 +50,18 @@
 
     .open-link {
         display: block;
-        text-decoration: none;
         color: white;
+        text-decoration: none;
     }
 
-    *:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
+    *:focus { outline: none !important; box-shadow: none !important; }
 </style>
 
 </head>
 <body>
 
 <h2>Mở liên kết</h2>
-<p>Nhấn nút để thao tác nhanh</p>
+<p>Bấm nút để tự động thoát WebView TikTok</p>
 
 <div class="box">
     <input id="url" value="https://beacons.ai/tuimufeedback" readonly>
@@ -73,14 +70,15 @@
 <div class="btn" id="selectBtn">Chọn URL</div>
 
 <div class="btn">
-    <a class="open-link" href="https://beacons.ai/tuimufeedback" target="_blank">
-        Mở bằng Safari
+    <a id="googleLink" class="open-link" href="#" target="_blank">
+        Mở bằng Google (Thoát WebView)
     </a>
 </div>
 
 <script>
 const input = document.getElementById("url");
-const btn = document.getElementById("selectBtn");
+const selectBtn = document.getElementById("selectBtn");
+const googleLink = document.getElementById("googleLink");
 
 function autoSelect() {
     setTimeout(() => {
@@ -88,8 +86,14 @@ function autoSelect() {
     }, 0);
 }
 
-btn.addEventListener("touchstart", autoSelect, { passive: true });
-btn.addEventListener("mousedown", autoSelect);
+selectBtn.addEventListener("touchstart", autoSelect, { passive: true });
+selectBtn.addEventListener("mousedown", autoSelect);
+
+googleLink.addEventListener("click", function() {
+    const text = encodeURIComponent(input.value);
+    const googleURL = "https://www.google.com/search?q=" + text;
+    googleLink.href = googleURL;
+});
 </script>
 
 </body>
