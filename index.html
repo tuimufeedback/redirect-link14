@@ -4,70 +4,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tô đen URL</title>
+<title>Mở liên kết</title>
 
 <style>
     body {
         font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        padding: 40px 18px;
         text-align: center;
-        padding: 60px 0;
-        background: #fff;
+        background: #ffffff;
     }
 
-    h2 { font-size: 28px; font-weight: 700; }
-    p  { font-size: 18px; opacity: 0.7; }
+    h2 {
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
 
-    .box {
-        margin: 30px auto;
-        width: 92%;
+    p {
+        font-size: 18px;
+        color: #555;
+        margin-top: 5px;
+        line-height: 1.45;
+    }
+
+    #boxWrap {
+        margin: 35px auto;
+        padding: 26px 16px;
+        border-radius: 20px;
         background: #f2f2f2;
-        border-radius: 18px;
-        padding: 35px 20px;
+        transition: 0.2s;
     }
 
     #urlBox {
         font-size: 22px;
-        text-align: center;
+        line-height: 32px;
         user-select: text;
         word-break: break-all;
     }
 
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+
+    .pulse {
+        animation: pulse 0.6s ease-in-out 2;
+    }
+
     .btn {
-        width: 82%;
-        margin: 20px auto;
+        width: 86%;
+        margin: 18px auto;
         padding: 18px 20px;
         background: #ff5722;
-        color: white;
+        color: #fff;
         font-size: 22px;
-        border-radius: 16px;
+        border-radius: 14px;
         font-weight: 600;
         user-select: none;
     }
-</style>
 
+    #hint {
+        margin-top: 12px;
+        font-size: 17px;
+        color: #ff5722;
+        font-weight: 600;
+        display: none;
+    }
+</style>
 </head>
+
 <body>
 
-<h2>Tô đen URL</h2>
-<p>Nhấn nút để tự động chọn toàn bộ URL</p>
+<h2>Mở liên kết</h2>
+<p>Nhấn nút để tô đen URL → sau đó chạm 1 lần để hiện “Mở liên kết”</p>
 
-<div class="box">
+<div id="boxWrap">
     <div id="urlBox">https://beacons.ai/tuimufeedback</div>
 </div>
 
-<div class="btn" id="selectBtn">Chọn URL</div>
+<div id="selectBtn" class="btn">Chọn URL</div>
+
+<div id="hint">👉 Chạm 1 lần vào đoạn URL!</div>
 
 <script>
 const urlBox = document.getElementById("urlBox");
-const btnSelect = document.getElementById("selectBtn");
+const wrap = document.getElementById("boxWrap");
+const btn = document.getElementById("selectBtn");
+const hint = document.getElementById("hint");
 
-// BƯỚC 1 — TÔ ĐEN DIV (Chạy 100% trên TikTok iOS)
-btnSelect.addEventListener("click", () => {
+btn.addEventListener("click", () => {
     const range = document.createRange();
     range.selectNodeContents(urlBox);
+
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
+
+    wrap.classList.add("pulse");
+    setTimeout(() => wrap.classList.remove("pulse"), 700);
+
+    hint.style.display = "block";
+
+    urlBox.scrollIntoView({ behavior: "smooth", block: "center" });
 });
 </script>
 
